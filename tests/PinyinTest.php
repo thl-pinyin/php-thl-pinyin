@@ -33,8 +33,25 @@ class PinyinTest extends PHPUnit_Framework_TestCase
 
     public function testMixed()
     {
+        $source = '台灣華語羅馬拼音THL';
+        $expect = 'tai2 wan1 hua2 yu3 luo2 ma3 pin1 yin1 THL';
+
+        $output = Pinyin::pinyin($source);
+            
+        $this->assertSame($expect, $output);
+    }
+
+    public function testMixedWithSpaces()
+    {
         $source = '台灣華語羅馬拼音 THL ';
         $expect = 'tai2 wan1 hua2 yu3 luo2 ma3 pin1 yin1 THL ';
+
+        $output = Pinyin::pinyin($source);
+            
+        $this->assertSame($expect, $output);
+
+        $source = '台灣華語羅馬拼音  THL  ';
+        $expect = 'tai2 wan1 hua2 yu3 luo2 ma3 pin1 yin1  THL  ';
 
         $output = Pinyin::pinyin($source);
             
@@ -61,14 +78,21 @@ class PinyinTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $output);
     }
 
-    // public function testToneless()
-    // {
-    //     $source = '台灣華語羅馬拼音 THL ';
-    //     $expect = 'taiwan huayu luoma pinyin THL ';
+    public function testToneless()
+    {
+        $source = '台灣華語羅馬拼音 THL ';
+        $expect = 'tai wan hua yu luo ma pin yin THL ';
 
-    //     $output = Pinyin::pinyin($source);
-            
-    //     $this->assertSame($expect, $output);
-    // }
+        $output = Pinyin::pinyin($source, array("tone" => "none", "split" => "word"));
+
+        $this->assertSame($expect, $output);
+
+        $source = '台灣華語羅馬拼音 THL ';
+        $expect = 'taiwan huayu luoma pinyin THL ';
+
+        $output = Pinyin::pinyin($source, array("tone" => "none", "split" => "phrase"));
+
+        $this->assertSame($expect, $output);
+    }
 
 }
