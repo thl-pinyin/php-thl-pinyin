@@ -6,21 +6,22 @@
 * 臺灣華語羅馬拼音 (THL)
 
 ### 使用說明
+#### Pinyin::bpmf()
+將字串內漢字以華語注音符號表示
 ```php
 string THL\Pinyin::bpmf(string $source)
 ```
 ##### 參數
 * $source 輸入字串
 
-##### 輸出
-* 將字串內漢字以華語注音符號表示
-
 ##### 範例
 ```php
 // returns "THL ㄊㄞˊ ㄨㄢ ㄏㄨㄚˊ ㄩˇ ㄌㄨㄛˊ ㄇㄚˇ ㄆㄧㄣ ㄧㄣ"
 $output = THL\Pinyin::bpmf("THL台灣華語羅馬拼音");
 ```
-
+#### Pinyin::pinyin()
+將字串內漢字以華語拼音表示
+* 目前暫時只支援臺灣華語羅馬拼音 (THL)
 ```php
 string THL\Pinyin::pinyin(string $source, array $options)
 ```
@@ -29,9 +30,6 @@ string THL\Pinyin::pinyin(string $source, array $options)
 * $options 參數
   * tone: 聲調，number (數字表示) 或是 none (無聲調)，預設為 number
   * split: 分割，word (單字) 或是 phrase (詞)，預設為 word
-
-##### 輸出
-* 將字串內漢字以華語拼音表示
 
 ##### 範例
 ```php
@@ -42,6 +40,9 @@ $output = THL\Pinyin::pinyin("THL台灣華語羅馬拼音");
 $output = THL\Pinyin::pinyin("THL台灣華語羅馬拼音", array('tone' => 'none', 'split' => 'phrase'));
 ```
 
+#### Pinyin::slug()
+產生適合當網址的格式
+
 ```php
 string THL\Pinyin::slug(string $source, array $options)
 ```
@@ -49,9 +50,6 @@ string THL\Pinyin::slug(string $source, array $options)
 * $source 輸入字串
 * $options 參數
   * split: 分割，word (單字) 或是 phrase (詞)，預設為 phrase
-
-##### 輸出
-* 輸出成適合當網址的格式
 
 ##### 範例
 ```php
