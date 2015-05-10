@@ -26,8 +26,8 @@ class SlugTest extends PHPUnit_Framework_TestCase
 
     public function testMixed()
     {
-        $source = '台灣華語羅馬拼音THL';
-        $expect = 'taiwan-huayu-luoma-pinyin-thl';
+        $source = 'THL台灣華語THL羅馬拼音THL';
+        $expect = 'thl-taiwan-huayu-thl-luoma-pinyin-thl';
 
         $output = Pinyin::slug($source);
             
@@ -36,15 +36,22 @@ class SlugTest extends PHPUnit_Framework_TestCase
 
     public function testMixedWithSpaces()
     {
-        $source = '台灣華語羅馬拼音 THL ';
-        $expect = 'taiwan-huayu-luoma-pinyin-thl-';
+        $source = ' THL 台灣華語 THL 羅馬拼音 THL ';
+        $expect = '-thl-tai-wan-hua-yu-thl-luo-ma-pin-yin-thl-';
+
+        $output = Pinyin::slug($source, array('split' => 'word'));
+            
+        $this->assertSame($expect, $output);
+
+        $source = ' THL 台灣華語 THL 羅馬拼音 THL ';
+        $expect = '-thl-taiwan-huayu-thl-luoma-pinyin-thl-';
 
         $output = Pinyin::slug($source);
             
         $this->assertSame($expect, $output);
 
-        $source = '台灣華語羅馬拼音  THL  ';
-        $expect = 'taiwan-huayu-luoma-pinyin-thl-';
+        $source = '  THL  台灣華語  THL  羅馬拼音  THL  ';
+        $expect = '-thl-taiwan-huayu-thl-luoma-pinyin-thl-';
 
         $output = Pinyin::slug($source);
             

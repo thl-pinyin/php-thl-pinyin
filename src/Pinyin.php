@@ -18,11 +18,37 @@ class Pinyin
         return strtr($source, $thl_pinyin_phrases);
     }
 
+    /**
+     * Split by phrases
+     *
+     * @param  string $source
+     * @return string 
+     */
+    private static function splitPhrase($source)
+    {
+        // $source = strtr($source, array("\035" => "5", "\036" => "6", "\037" => "7"));
+        $output = preg_replace("/(^\035|\037|\036$)/", '', $source);
+        return preg_replace("/(\036\035|\036 |\036| \035|\035)/", ' ', $output);
+    }
+
+    /**
+     * Split by words
+     *
+     * @param  string $source
+     * @return string 
+     */
+    private static function splitWord($source)
+    {
+        // $source = strtr($source, array("\035" => "5", "\036" => "6", "\037" => "7"));
+        $output = preg_replace("/(^\035|\037\036$)/", '', $source);
+        return preg_replace("/(\037\036\035|\037\036 |\037\036|\037| \035|\035)/", ' ', $output);
+    }
 
     /**
      * Convert traditional chinese string to pinyin (with tones)
      *
      * @param  string $source
+     * @param  array  $options
      * @return string 
      */
     public static function pinyin($source, $options = array())
@@ -75,13 +101,9 @@ class Pinyin
         // $output = str_replace("\036", "\037", $output);
 
         if ($split == 'phrase') {
-            $output = str_replace("\037", "", $output);
-            $output = rtrim($output, "\036");
-            $output = strtr($output, array("\036 " => " ", "\036" => " "));
+            $output = self::splitPhrase($output);
         } else { /* word */
-            $output = str_replace("\036", "", $output);
-            $output = rtrim($output, "\037");
-            $output = strtr($output, array("\037 " => " ", "\037" => " "));
+            $output = self::splitWord($output);
         }
         
         return $output;
@@ -95,22 +117,14 @@ class Pinyin
      */
     public static function bpmf($source)
     {
-        $output = self::phonetic($source);
-
-        $output = str_replace("\036", "", $output);
-        $output = rtrim($output, "\037");
-
-        $spaces = array("\037" => " ", "\037 " => " ");
-
-        $output = strtr($output, $spaces);
-
-        return $output;
+        return self::splitWord(self::phonetic($source));
     }
 
     /**
      * Convert traditional chinese string to url friendly string
      *
      * @param  string $source
+     * @param  array  $options
      * @return string 
      */
     public static function slug($source, $options = array())
