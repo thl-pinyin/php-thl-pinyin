@@ -1,6 +1,6 @@
 <?php 
 
-use THL\Pinyin\Pinyin;
+use THL\Pinyin;
 
 class PinyinTest extends PHPUnit_Framework_TestCase
 {

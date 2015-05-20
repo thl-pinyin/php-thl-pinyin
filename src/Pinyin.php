@@ -1,4 +1,4 @@
-<?php namespace THL\Pinyin;
+<?php namespace THL;
 
 include __DIR__ . "/phrases.php";
 include __DIR__ . "/notations.php";

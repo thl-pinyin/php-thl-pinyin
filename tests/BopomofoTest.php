@@ -1,6 +1,6 @@
 <?php 
 
-use THL\Pinyin\Pinyin;
+use THL\Pinyin;
 
 class BopomofoTest extends PHPUnit_Framework_TestCase
 {
