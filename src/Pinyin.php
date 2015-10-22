@@ -92,7 +92,7 @@ class Pinyin
                 $output = strtr($output, $tones);
 
                 break;
-            
+
             default: /* number */
                 $tones = array(
                     "\037"  => "1\037",
@@ -144,7 +144,7 @@ class Pinyin
         $output = self::pinyin($source, $options);
 
         $table = array(
-            'ˊ' => '', 'ˇ' => '', 'ˋ' => '', '˙' => '', 
+            'ˊ' => '', 'ˇ' => '', 'ˋ' => '', '˙' => '',
             'Š'=>'S', 'š'=>'s', 'Đ'=>'Dj', 'đ'=>'dj', 'Ž'=>'z', 'ž'=>'z', 
             'Č'=>'C', 'č'=>'c', 'Ć'=>'C',  'ć'=>'c',
             'À'=>'A', 'Á'=>'A', 'Â'=>'A',  'Ã'=>'A', 'Ä'=>'A', 'Å'=>'a', 'Æ'=>'A', 'Ç'=>'C',
@@ -156,10 +156,11 @@ class Pinyin
             'ð'=>'o', 'ñ'=>'n', 'ò'=>'o',  'ó'=>'o', 'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 
             'ù'=>'u', 'ú'=>'u', 'û'=>'u',  'ý'=>'y', 'ý'=>'y', 'þ'=>'b',
             'ÿ'=>'y', 'Ŕ'=>'r', 'ŕ'=>'r',  '/' => '-', ' ' => '-',
+
         );
 
         /* remove spaces */
-        $output = preg_replace(array('/\s{2,}/', '/[\t\n]/'), ' ', $output);
+        $output = preg_replace(array('/\s{2,}/', '/[\t\n\W]/'), ' ', $output);
         
         $output = strtolower(strtr($output, $table));
 

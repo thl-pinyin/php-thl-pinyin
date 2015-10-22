@@ -58,4 +58,14 @@ class SlugTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $output);
     }
 
+    public function testSpecialCharacters()
+    {
+        $source = '特殊字元~!@#$%^&*()_+{}|:"<>?-=[]\\;\',./';
+        $expect = 'teshu-zihyuan------------_-------------------';
+
+        $output = Pinyin::slug($source);
+            
+        $this->assertSame($expect, $output);
+    }
+
 }
