@@ -27,8 +27,15 @@ class Pinyin
     private static function splitPhrase($source)
     {
         // $source = strtr($source, array("\035" => "5", "\036" => "6", "\037" => "7"));
-        $output = preg_replace("/(^\035|\037|\036$)/", '', $source);
-        return preg_replace("/(\036\035|\036 |\036| \035|\035)/", ' ', $output);
+        $output = strtr($source, 
+            array("\037a"  => "'a", 
+                  "\037e"  => "'e", 
+                  "\037o"  => "'o",
+                  "\037ny" => "'ny",
+        ));
+
+        $output = preg_replace("/^\035|\037|\036$/", '', $output);
+        return preg_replace("/\036 \035|\036\035|\036 |\036| \035|\035/", ' ', $output);
     }
 
     /**
@@ -39,9 +46,10 @@ class Pinyin
      */
     private static function splitWord($source)
     {
-        // $source = strtr($source, array("\035" => "5", "\036" => "6", "\037" => "7"));
-        $output = preg_replace("/(^\035|\037\036$)/", '', $source);
-        return preg_replace("/(\037\036\035|\037\036 |\037\036|\037| \035|\035)/", ' ', $output);
+        // $output = strtr($source, array("\035" => "5", "\036" => "6", "\037" => "7"));
+
+        $output = preg_replace("/^\035|\037\036$/", '', $source);
+        return preg_replace("/\037\036 \035|\037\036\035|\037\036 |\037\036|\037| \035|\035/", ' ', $output);
     }
 
     /**

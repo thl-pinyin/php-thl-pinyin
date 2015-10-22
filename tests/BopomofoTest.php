@@ -25,7 +25,7 @@ class BopomofoTest extends PHPUnit_Framework_TestCase
     public function testWithSpaces()
     {
         $source = ' 台灣華語 羅馬拼音 ';
-        $expect = ' ㄊㄞˊ ㄨㄢ ㄏㄨㄚˊ ㄩˇ  ㄌㄨㄛˊ ㄇㄚˇ ㄆㄧㄣ ㄧㄣ ';
+        $expect = ' ㄊㄞˊ ㄨㄢ ㄏㄨㄚˊ ㄩˇ ㄌㄨㄛˊ ㄇㄚˇ ㄆㄧㄣ ㄧㄣ ';
 
         $output = Pinyin::bpmf($source);
             

@@ -42,7 +42,7 @@ class PinyinTest extends PHPUnit_Framework_TestCase
     public function testEndWithSpaces()
     {
         $source = ' 台灣華語 羅馬拼音 ';
-        $expect = ' tai2 wan1 hua2 yu3  luo2 ma3 pin1 yin1 ';
+        $expect = ' tai2 wan1 hua2 yu3 luo2 ma3 pin1 yin1 ';
 
         $output = Pinyin::pinyin($source);
             
@@ -105,8 +105,8 @@ class PinyinTest extends PHPUnit_Framework_TestCase
 
     public function testToneless()
     {
-        $source = '台灣華語羅馬拼音 THL ';
-        $expect = 'tai wan hua yu luo ma pin yin THL ';
+        $source = '台灣華語羅馬拼音 THL';
+        $expect = 'tai wan hua yu luo ma pin yin THL';
 
         $output = Pinyin::pinyin($source, array("tone" => "none", "split" => "word"));
 
@@ -118,6 +118,39 @@ class PinyinTest extends PHPUnit_Framework_TestCase
         $output = Pinyin::pinyin($source, array("tone" => "none", "split" => "phrase"));
 
         $this->assertSame($expect, $output);
+
+        $source = '仁愛白鵝海鷗長女';
+        $expect = "ren'ai bai'e hai'ou jhang'nyu";
+
+        $output = Pinyin::pinyin($source, array("tone" => "none", "split" => "phrase"));
+
+        $this->assertSame($expect, $output);
+
+    }
+
+    public function testTonelessWithSpaces()
+    {
+        $source = ' 台灣華語 羅馬拼音 THL ';
+        $expect = ' tai wan hua yu luo ma pin yin THL ';
+
+        $output = Pinyin::pinyin($source, array("tone" => "none", "split" => "word"));
+
+        $this->assertSame($expect, $output);
+
+        $source = ' 台灣華語 羅馬拼音 THL ';
+        $expect = ' taiwan huayu luoma pinyin THL ';
+
+        $output = Pinyin::pinyin($source, array("tone" => "none", "split" => "phrase"));
+
+        $this->assertSame($expect, $output);
+
+        $source = ' 仁愛白鵝 海鷗長女 ';
+        $expect = " ren'ai bai'e hai'ou jhang'nyu ";
+
+        $output = Pinyin::pinyin($source, array("tone" => "none", "split" => "phrase"));
+
+        $this->assertSame($expect, $output);
+
     }
 
 }
