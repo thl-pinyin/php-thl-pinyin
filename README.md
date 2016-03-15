@@ -94,4 +94,4 @@ $output = THL\Pinyin::pinyin("THL台灣華語羅馬拼音", array('notation' => 
 ### 詞庫
 詞庫的部份以[小麥注音](https://mcbopomofo.openvanilla.org)為基礎，字的部份另外使用[cconv](https://github.com/xiaoyjy/cconv) 翻譯成簡體漢字
 
-* 由於詞庫部份沒翻譯成中式華語，以簡體漢字書寫之句字有大部份的情況會被視為獨立單字組成
+* 由於詞庫部份尚未翻譯為中式華語，以簡體漢字書寫之句子有大部份的情況會被視為獨立單字組成
