@@ -4,6 +4,20 @@ use THL\Pinyin;
 
 class PinyinTest extends PHPUnit_Framework_TestCase
 {
+    public function pinyinCheck($expect, $source, $options)
+    {
+        $p = new Pinyin;
+        
+        $static = Pinyin::pinyin($source, $options);
+        $output = $p->pinyin($source, $options);
+
+        unset($options['override']);
+
+        $this->assertSame($expect, $static, "$source - " . implode(" - ", $options) . " static");
+        $this->assertSame($expect, $output, "$source - " . implode(" - ", $options));
+
+    }
+
     public function testBasic()
     {
         set_error_handler(function($no, $str, $file, $line, $context) {});
@@ -41,21 +55,27 @@ class PinyinTest extends PHPUnit_Framework_TestCase
             )
         );
 
+        $p = new Pinyin;
+
         foreach ($tests as $option => $test) {
             foreach ($test as $key => $value) {
-                    $output = Pinyin::pinyin("THL", array($option => $key));
+                $static = Pinyin::pinyin("THL", array($option => $key));
+                $output = $p->pinyin("THL", array($option => $key));
                 if ($value == true) {
+                    $this->assertSame($output, "THL", "$option - $key static");
                     $this->assertSame($output, "THL", "$option - $key");
                 } else {
+                    $this->assertFalse($output, "$option - $key static");
                     $this->assertFalse($output, "$option - $key");
                 }
             }
         }
 
-        $this->assertSame(Pinyin::pinyin('THL', array('notation' => 'thl', 'tone' => 'mark')), 'THL', 'thl - mark');
-        $this->assertFalse(Pinyin::pinyin('THL', array('notation' => 'ty', 'tone' => 'mark')), 'THL', 'ty - mark');
-
-
+        $this->assertSame(Pinyin::pinyin('THL', array('notation' => 'thl', 'tone' => 'mark')), 'THL', 'thl - mark static');
+        $this->assertSame($p->pinyin('THL', array('notation' => 'thl', 'tone' => 'mark')), 'THL', 'thl - mark');
+        $this->assertFalse(Pinyin::pinyin('THL', array('notation' => 'ty', 'tone' => 'mark')), 'THL', 'ty - mark static');
+        $this->assertFalse($p->pinyin('THL', array('notation' => 'ty', 'tone' => 'mark')), 'THL', 'ty - mark');
+        
     }
 
     public function testWord() 
@@ -104,21 +124,16 @@ class PinyinTest extends PHPUnit_Framework_TestCase
             ),
         );
         
+        $p = new Pinyin;
+
         foreach ($notations as $notation => $tests) {
             foreach ($tests as $source => $expect) {
                 foreach (array_keys($expect) as $tone) {
-                    $output = Pinyin::pinyin($source, array('notation' => $notation, 'tone' => $tone));
-                    $this->assertSame($expect[$tone], $output, "$notation - $source - $tone");
-
-                    $output = Pinyin::pinyin($source, array('notation' => $notation, 'split' => 'word', 'tone' => $tone));
-                    $this->assertSame($expect[$tone], $output, "$notation - $source - $tone");
+                    $this->pinyinCheck($expect[$tone], $source, array('notation' => $notation, 'tone' => $tone));
 
                     if ($notation == 'thl') {
-                        $output = Pinyin::pinyin($source, array('tone' => $tone));
-                        $this->assertSame($expect[$tone], $output, "$source - $tone");
-
-                        $output = Pinyin::pinyin($source, array('split' => 'word', 'tone' => $tone));
-                        $this->assertSame($expect[$tone], $output, "$source - $tone");
+                        $this->pinyinCheck($expect[$tone], $source, array('tone' => $tone));
+                        $this->pinyinCheck($expect[$tone], $source, array('split' => 'word', 'tone' => $tone));
                     }
 
                 }
@@ -173,15 +188,15 @@ class PinyinTest extends PHPUnit_Framework_TestCase
             ),
         );
         
+        $p = new Pinyin;
+
         foreach ($notations as $notation => $tests) {
             foreach ($tests as $source => $expect) {
                 foreach (array_keys($expect) as $tone) {
-                    $output = Pinyin::pinyin($source, array('notation' => $notation, 'split' => 'phrase', 'tone' => $tone));
-                    $this->assertSame($expect[$tone], $output, "$notation - $source - $tone");
-
+                    $this->pinyinCheck($expect[$tone], $source, array('notation' => $notation, 'split' => 'phrase', 'tone' => $tone));
+                    
                     if ($notation == 'thl') {
-                        $output = Pinyin::pinyin($source, array('split' => 'phrase', 'tone' => $tone));
-                        $this->assertSame($expect[$tone], $output, "$source - $tone");
+                        $this->pinyinCheck($expect[$tone], $source, array('split' => 'phrase', 'tone' => $tone));
                     }
                 }
             }
@@ -213,10 +228,11 @@ class PinyinTest extends PHPUnit_Framework_TestCase
             ),
         );
         
+        $p = new Pinyin;
+
         foreach ($tests as $source => $expect) {
             foreach (array_keys($expect) as $tone) {
-                $output = Pinyin::pinyin($source, array('tone' => $tone));
-                $this->assertSame($expect[$tone], $output, "$source - $tone");
+                $this->pinyinCheck($expect[$tone], $source, array('tone' => $tone));
             }
         }
     }
@@ -248,8 +264,7 @@ class PinyinTest extends PHPUnit_Framework_TestCase
         
         foreach ($tests as $source => $expect) {
             foreach (array_keys($expect) as $tone) {
-                $output = Pinyin::pinyin($source, array('split' => 'phrase', 'tone' => $tone));
-                $this->assertSame($expect[$tone], $output, "$source - $tone");
+                $this->pinyinCheck($expect[$tone], $source, array('split' => 'phrase', 'tone' => $tone));
             }
         }
     }
@@ -281,8 +296,7 @@ class PinyinTest extends PHPUnit_Framework_TestCase
         
         foreach ($tests as $source => $expect) {
             foreach (array_keys($expect) as $tone) {
-                $output = Pinyin::pinyin($source, array('tone' => $tone));
-                $this->assertSame($expect[$tone], $output, "$source - $tone");
+                $this->pinyinCheck($expect[$tone], $source, array('tone' => $tone));
             }
         }
     }
@@ -314,8 +328,7 @@ class PinyinTest extends PHPUnit_Framework_TestCase
         
         foreach ($tests as $source => $expect) {
             foreach (array_keys($expect) as $tone) {
-                $output = Pinyin::pinyin($source, array('split' => 'phrase', 'tone' => $tone));
-                $this->assertSame($expect[$tone], $output, "$source - $tone");
+                $this->pinyinCheck($expect[$tone], $source, array('split' => 'phrase', 'tone' => $tone));
             }
         }
     }
@@ -349,8 +362,7 @@ class PinyinTest extends PHPUnit_Framework_TestCase
         foreach ($notations as $notation => $tests) {
             foreach ($tests as $source => $expect) {
                 foreach (array_keys($expect) as $tone) {
-                    $output = Pinyin::pinyin($source, array('notation' => $notation, 'tone' => $tone));
-                    $this->assertSame($expect[$tone], $output, "$notation - $source - $tone");
+                    $this->pinyinCheck($expect[$tone], $source, array('notation' => $notation, 'tone' => $tone));
                 }
             }
         }
@@ -361,9 +373,7 @@ class PinyinTest extends PHPUnit_Framework_TestCase
         $source = '補充字 - 崩棚猛奉撥坡摸佛';
         $expect = 'bu3 chong1 zih4 - bong1 pong2 mong3 fong4 buo1 puo1 muo1 fo2';
 
-        $output = Pinyin::pinyin($source, array("override" => array('ㄅㄛ' => 'buo', 'ㄆㄛ' => 'puo', 'ㄇㄛ' => 'muo')));
-            
-        $this->assertSame($expect, $output);
+        $this->pinyinCheck($expect, $source, array("override" => array('ㄅㄛ' => 'buo', 'ㄆㄛ' => 'puo', 'ㄇㄛ' => 'muo')));
     }
 
 }

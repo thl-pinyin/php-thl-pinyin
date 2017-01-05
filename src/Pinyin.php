@@ -1,4 +1,6 @@
-<?php namespace THL;
+<?php 
+
+namespace THL;
 
 include __DIR__ . "/phrases.php";
 // include __DIR__ . "/notations.php";
@@ -11,7 +13,7 @@ class Pinyin
      * @param  string $source
      * @return string 
      */
-    private static function phonetic($source) 
+    private static function phonetic($source)
     {       
         global $thl_pinyin_phrases;
 
@@ -82,8 +84,6 @@ class Pinyin
         /* convert to bopomofo */
         $output = self::phonetic($source);
 
-        // return 'aa';
-        
         if (isset($options['override'])) {
             $output = strtr($output, $options['override']);
         }
@@ -261,4 +261,5 @@ class Pinyin
         return strtolower(preg_replace(array('/[^a-zA-Z0-9 -]/u', '/[ -]+/', '/^-|-$/'), array('_', '-', ''), $output));
 
     }
+
 }
