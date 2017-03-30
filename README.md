@@ -9,6 +9,11 @@
 * 注音二式
 * 威妥瑪拼音
 
+### 安裝方式
+建議使用 php-composer 安裝
+```sh
+composer require thl/pinyin
+```
 ### 使用說明
 #### Pinyin::bpmf()
 將字串內漢字以華語注音符號表示
