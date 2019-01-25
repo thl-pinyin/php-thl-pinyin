@@ -152,7 +152,7 @@ $thl_pinyin_bpmf_to_pinyin = array(
     "ㄌㄨㄥ" => "lung",
     "ㄌㄩ" => "lü",
     "ㄌㄩㄝ" => "lüeh",
-    "ㄌㄩㄢ" => "lüen",
+    "ㄌㄩㄢ" => "lüan",
     "ㄍㄚ" => "ka",
     "ㄍㄜ" => "kê",
     "ㄍㄞ" => "kai",
@@ -407,7 +407,7 @@ $thl_pinyin_bpmf_to_pinyin = array(
     "ㄨㄥ" => "wêng",
     "ㄩ" => "yü",
     "ㄩㄝ" => "yüeh",
-    "ㄩㄢ" => "yüen",
+    "ㄩㄢ" => "yüan",
     "ㄩㄣ" => "yün",
     "ㄩㄥ" => "yung",
 );
