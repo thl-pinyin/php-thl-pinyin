@@ -2,9 +2,6 @@
 
 namespace THL;
 
-include __DIR__ . "/phrases.php";
-// include __DIR__ . "/notations.php";
-
 class Pinyin
 {
     /**
@@ -15,7 +12,11 @@ class Pinyin
      */
     private static function phonetic($source)
     {       
-        global $thl_pinyin_phrases;
+        static $thl_pinyin_phrases; // cache
+
+        if (!isset($thl_pinyin_phrases)) {
+            $thl_pinyin_phrases = require __DIR__ . "/phrases.php";
+        }
 
         return strtr($source, $thl_pinyin_phrases);
     }
