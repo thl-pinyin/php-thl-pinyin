@@ -1,23 +1,30 @@
-<?php 
+<?php
 
 use THL\Pinyin;
 
-class BopomofoTest extends PHPUnit_Framework_TestCase
+class BopomofoTest extends \PHPUnit\Framework\TestCase
 {
     public function testBasic()
     {
-        $source = '台灣華語羅馬拼音';
+        $source = '臺灣華語羅馬拼音';
         $expect = 'ㄊㄞˊ ㄨㄢ ㄏㄨㄚˊ ㄩˇ ㄌㄨㄛˊ ㄇㄚˇ ㄆㄧㄣ ㄧㄣ';
 
         $output = Pinyin::bpmf($source);
-            
+
+        $this->assertSame($expect, $output);
+
+        $source = '台湾華語羅馬拼音';
+        $expect = 'ㄊㄞˊ ㄨㄢ ㄏㄨㄚˊ ㄩˇ ㄌㄨㄛˊ ㄇㄚˇ ㄆㄧㄣ ㄧㄣ';
+
+        $output = Pinyin::bpmf($source);
+
         $this->assertSame($expect, $output);
 
         $source = '台湾华语罗马拼音';
         $expect = 'ㄊㄞˊ ㄨㄢ ㄏㄨㄚˊ ㄩˇ ㄌㄨㄛˊ ㄇㄚˇ ㄆㄧㄣ ㄧㄣ';
 
         $output = Pinyin::bpmf($source);
-            
+
         $this->assertSame($expect, $output);
 
     }
@@ -28,14 +35,14 @@ class BopomofoTest extends PHPUnit_Framework_TestCase
         $expect = ' ㄊㄞˊ ㄨㄢ ㄏㄨㄚˊ ㄩˇ ㄌㄨㄛˊ ㄇㄚˇ ㄆㄧㄣ ㄧㄣ ';
 
         $output = Pinyin::bpmf($source);
-            
+
         $this->assertSame($expect, $output);
 
         $source = '  台灣華語  羅馬拼音  ';
         $expect = '  ㄊㄞˊ ㄨㄢ ㄏㄨㄚˊ ㄩˇ  ㄌㄨㄛˊ ㄇㄚˇ ㄆㄧㄣ ㄧㄣ  ';
 
         $output = Pinyin::bpmf($source);
-            
+
         $this->assertSame($expect, $output);
     }
 
@@ -45,7 +52,7 @@ class BopomofoTest extends PHPUnit_Framework_TestCase
         $expect = 'THL ㄊㄞˊ ㄨㄢ ㄏㄨㄚˊ ㄩˇ THL ㄌㄨㄛˊ ㄇㄚˇ ㄆㄧㄣ ㄧㄣ THL';
 
         $output = Pinyin::bpmf($source);
-            
+
         $this->assertSame($expect, $output);
     }
 
@@ -55,14 +62,14 @@ class BopomofoTest extends PHPUnit_Framework_TestCase
         $expect = ' THL ㄊㄞˊ ㄨㄢ ㄏㄨㄚˊ ㄩˇ THL ㄌㄨㄛˊ ㄇㄚˇ ㄆㄧㄣ ㄧㄣ THL ';
 
         $output = Pinyin::bpmf($source);
-            
+
         $this->assertSame($expect, $output);
 
         $source = '  THL  台灣華語  THL  羅馬拼音  THL  ';
         $expect = '  THL  ㄊㄞˊ ㄨㄢ ㄏㄨㄚˊ ㄩˇ  THL  ㄌㄨㄛˊ ㄇㄚˇ ㄆㄧㄣ ㄧㄣ  THL  ';
 
         $output = Pinyin::bpmf($source);
-            
+
         $this->assertSame($expect, $output);
     }
 }

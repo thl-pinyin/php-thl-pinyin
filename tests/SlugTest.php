@@ -1,12 +1,12 @@
-<?php 
+<?php
 
 use THL\Pinyin;
 
-class SlugTest extends PHPUnit_Framework_TestCase
+class SlugTest extends \PHPUnit\Framework\TestCase
 {
     public function testBasic()
     {
-        set_error_handler(function($no, $str, $file, $line, $context) {});
+        set_error_handler(function($no, $str, $file, $line) {});
 
         $this->assertFalse(Pinyin::slug('THL', array('tone' => 'mark')), 'thl - mark');
         $this->assertFalse(Pinyin::slug('THL', array('notation' => 'ty', 'tone' => 'mark')), 'ty - mark');
@@ -59,7 +59,7 @@ class SlugTest extends PHPUnit_Framework_TestCase
                 ),
             ),
         );
-        
+
         foreach ($notations as $notation => $tests) {
             foreach ($tests as $source => $expect) {
                 foreach (array_keys($expect) as $tone) {
@@ -124,7 +124,7 @@ class SlugTest extends PHPUnit_Framework_TestCase
                 ),
             ),
         );
-        
+
         foreach ($notations as $notation => $tests) {
             foreach ($tests as $source => $expect) {
                 foreach (array_keys($expect) as $tone) {
@@ -160,7 +160,7 @@ class SlugTest extends PHPUnit_Framework_TestCase
                 'none'   => 'tai-wan-hua-yu-luo-ma-pin-yin',
             ),
         );
-        
+
         foreach ($tests as $source => $expect) {
             foreach (array_keys($expect) as $tone) {
                 $output = Pinyin::slug($source, array('tone' => $tone));
@@ -194,7 +194,7 @@ class SlugTest extends PHPUnit_Framework_TestCase
             ),
 
         );
-        
+
         foreach ($tests as $source => $expect) {
             foreach (array_keys($expect) as $tone) {
                 $output = Pinyin::slug($source, array('split' => 'phrase', 'tone' => $tone));
@@ -216,7 +216,7 @@ class SlugTest extends PHPUnit_Framework_TestCase
             ),
             '  THL 台灣  の  華語  THL  羅馬拼音 THL  ' => array(
                 'number' => 'thl-tai2-wan1-_-hua2-yu3-thl-luo2-ma3-pin1-yin1-thl',
-                'none'   => 'thl-tai-wan-_-hua-yu-thl-luo-ma-pin-yin-thl',                
+                'none'   => 'thl-tai-wan-_-hua-yu-thl-luo-ma-pin-yin-thl',
             ),
             '   THL  台灣   の   華語   THL   羅馬拼音  THL   ' => array(
                 'number' => 'thl-tai2-wan1-_-hua2-yu3-thl-luo2-ma3-pin1-yin1-thl',
@@ -227,7 +227,7 @@ class SlugTest extends PHPUnit_Framework_TestCase
                 'none'   => '_-tai-wan-_-hua-yu-_-luo-ma-_-pin-yin-_',
             ),
         );
-        
+
         foreach ($tests as $source => $expect) {
             foreach (array_keys($expect) as $tone) {
                 $output = Pinyin::slug($source, array('tone' => $tone));
@@ -249,14 +249,14 @@ class SlugTest extends PHPUnit_Framework_TestCase
             ),
             '  THL 台灣  の  華語  THL  羅馬拼音 THL  ' => array(
                 'number' => 'thl-tai2wan1-_-hua2yu3-thl-luo2ma3-pin1yin1-thl',
-                'none'   => 'thl-taiwan-_-huayu-thl-luoma-pinyin-thl',                
+                'none'   => 'thl-taiwan-_-huayu-thl-luoma-pinyin-thl',
             ),
             '   THL  台灣   の   華語   THL   羅馬拼音  THL   ' => array(
                 'number' => 'thl-tai2wan1-_-hua2yu3-thl-luo2ma3-pin1yin1-thl',
                 'none'   => 'thl-taiwan-_-huayu-thl-luoma-pinyin-thl',
             ),
         );
-        
+
         foreach ($tests as $source => $expect) {
             foreach (array_keys($expect) as $tone) {
                 $output = Pinyin::slug($source, array('split' => 'phrase', 'tone' => $tone));
@@ -272,7 +272,7 @@ class SlugTest extends PHPUnit_Framework_TestCase
 
 
         $output = Pinyin::slug($source);
-            
+
         $this->assertSame($expect, $output);
     }
 

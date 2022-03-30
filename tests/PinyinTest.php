@@ -1,13 +1,13 @@
-<?php 
+<?php
 
 use THL\Pinyin;
 
-class PinyinTest extends PHPUnit_Framework_TestCase
+class PinyinTest extends \PHPUnit\Framework\TestCase
 {
     public function pinyinCheck($expect, $source, $options)
     {
         $p = new Pinyin;
-        
+
         $static = Pinyin::pinyin($source, $options);
         $output = $p->pinyin($source, $options);
 
@@ -20,7 +20,7 @@ class PinyinTest extends PHPUnit_Framework_TestCase
 
     public function testBasic()
     {
-        set_error_handler(function($no, $str, $file, $line, $context) {});
+        set_error_handler(function($no, $str, $file, $line) {});
 
         $source ='臺灣華語羅馬拼音';
 
@@ -75,10 +75,10 @@ class PinyinTest extends PHPUnit_Framework_TestCase
         $this->assertSame($p->pinyin('THL', array('notation' => 'thl', 'tone' => 'mark')), 'THL', 'thl - mark');
         $this->assertFalse(Pinyin::pinyin('THL', array('notation' => 'ty', 'tone' => 'mark')), 'THL', 'ty - mark static');
         $this->assertFalse($p->pinyin('THL', array('notation' => 'ty', 'tone' => 'mark')), 'THL', 'ty - mark');
-        
+
     }
 
-    public function testWord() 
+    public function testWord()
     {
         $notations = array(
             'thl' => array(
@@ -123,7 +123,7 @@ class PinyinTest extends PHPUnit_Framework_TestCase
                 ),
             ),
         );
-        
+
         $p = new Pinyin;
 
         foreach ($notations as $notation => $tests) {
@@ -151,6 +151,41 @@ class PinyinTest extends PHPUnit_Framework_TestCase
                     'mark'   => 'taíwan huáyǔ luómǎ pinyin',
                     'none'   => 'taiwan huayu luoma pinyin',
                 ),
+                '台湾華語羅馬拼音' => array(
+                    'number' => 'tai2 wan1 hua2yu3 luo2ma3 pin1yin1',
+                    'mark'   => 'taí wan huáyǔ luómǎ pinyin',
+                    'none'   => 'tai wan huayu luoma pinyin',
+                ),
+                '台湾华语罗马拼音' => array(
+                    'number' => 'tai2 wan1 hua2 yu3 luo2 ma3 pin1yin1',
+                    'mark'   => 'taí wan huá yǔ luó mǎ pinyin',
+                    'none'   => 'tai wan hua yu luo ma pinyin',
+                ),
+                '仁愛白鵝海鷗長女' => array(
+                    'number' => 'ren2ai4 bai2e2 hai3ou1 jhang3nyu3',
+                    'mark'   => 'rén\'aì baí\'é haǐ\'ou jhǎng\'nyǔ',
+                    'none'   => 'ren\'ai bai\'e hai\'ou jhang\'nyu',
+                ),
+            ),
+            'hy' => array(
+                '仁愛白鵝海鷗長女' => array(
+                    'number' => 'ren2ai4 bai2e2 hai3ou1 zhang3nü3',
+                    'none'   => 'ren\'ai bai\'e hai\'ou zhangnü',
+                ),
+            ),
+            'ty' => array(
+                '仁愛白鵝海鷗長女' => array(
+                    'number' => 'ren2ai4 bai2e2 hai3ou1 jhang3nyu3',
+                    'none'   => 'ren-ai bai-e hai-ou jhang-nyu',
+                ),
+            ),
+            'mps2' => array(
+                '仁愛白鵝海鷗長女' => array(
+                    'number' => 'ren2ai4 bai2e2 hai3ou1 jang3niu3',
+                    'none'   => 'ren-ai bai-e hai-ou jangniu',
+                ),
+            ),
+            'wg' => array(
                 '台湾华语罗马拼音' => array(
                     'number' => 'tai2 wan1 hua2 yu3 luo2 ma3 pin1yin1',
                     'mark'   => 'taí wan huá yǔ luó mǎ pinyin',
@@ -187,14 +222,14 @@ class PinyinTest extends PHPUnit_Framework_TestCase
                 ),
             ),
         );
-        
+
         $p = new Pinyin;
 
         foreach ($notations as $notation => $tests) {
             foreach ($tests as $source => $expect) {
                 foreach (array_keys($expect) as $tone) {
                     $this->pinyinCheck($expect[$tone], $source, array('notation' => $notation, 'split' => 'phrase', 'tone' => $tone));
-                    
+
                     if ($notation == 'thl') {
                         $this->pinyinCheck($expect[$tone], $source, array('split' => 'phrase', 'tone' => $tone));
                     }
@@ -227,7 +262,7 @@ class PinyinTest extends PHPUnit_Framework_TestCase
                 'none'   => '   tai wan hua yu   luo ma pin yin   ',
             ),
         );
-        
+
         $p = new Pinyin;
 
         foreach ($tests as $source => $expect) {
@@ -261,7 +296,7 @@ class PinyinTest extends PHPUnit_Framework_TestCase
                 'none'   => '  taiwan huayu   luoma pinyin  ',
             ),
         );
-        
+
         foreach ($tests as $source => $expect) {
             foreach (array_keys($expect) as $tone) {
                 $this->pinyinCheck($expect[$tone], $source, array('split' => 'phrase', 'tone' => $tone));
@@ -280,20 +315,20 @@ class PinyinTest extends PHPUnit_Framework_TestCase
             ' THL 台灣 の 華語 THL 羅馬拼音 THL ' => array(
                 'number' => ' THL tai2 wan1 の hua2 yu3 THL luo2 ma3 pin1 yin1 THL ',
                 'mark'   => ' THL taí wan の huá yǔ THL luó mǎ pin yin THL ',
-                'none'   => ' THL tai wan の hua yu THL luo ma pin yin THL ',                
+                'none'   => ' THL tai wan の hua yu THL luo ma pin yin THL ',
             ),
             '  THL 台灣  の  華語  THL  羅馬拼音 THL  ' => array(
                 'number' => '  THL tai2 wan1  の  hua2 yu3  THL  luo2 ma3 pin1 yin1 THL  ',
                 'mark'   => '  THL taí wan  の  huá yǔ  THL  luó mǎ pin yin THL  ',
-                'none'   => '  THL tai wan  の  hua yu  THL  luo ma pin yin THL  ',                
+                'none'   => '  THL tai wan  の  hua yu  THL  luo ma pin yin THL  ',
             ),
             '   THL  台灣   の   華語   THL   羅馬拼音  THL   ' => array(
                 'number' => '   THL  tai2 wan1   の   hua2 yu3   THL   luo2 ma3 pin1 yin1  THL   ',
                 'mark'   => '   THL  taí wan   の   huá yǔ   THL   luó mǎ pin yin  THL   ',
-                'none'   => '   THL  tai wan   の   hua yu   THL   luo ma pin yin  THL   ',                
+                'none'   => '   THL  tai wan   の   hua yu   THL   luo ma pin yin  THL   ',
             ),
         );
-        
+
         foreach ($tests as $source => $expect) {
             foreach (array_keys($expect) as $tone) {
                 $this->pinyinCheck($expect[$tone], $source, array('tone' => $tone));
@@ -312,20 +347,20 @@ class PinyinTest extends PHPUnit_Framework_TestCase
             ' THL 台灣 の 華語 THL 羅馬拼音 THL ' => array(
                 'number' => ' THL tai2wan1 の hua2yu3 THL luo2ma3 pin1yin1 THL ',
                 'mark'   => ' THL taíwan の huáyǔ THL luómǎ pinyin THL ',
-                'none'   => ' THL taiwan の huayu THL luoma pinyin THL ',                
+                'none'   => ' THL taiwan の huayu THL luoma pinyin THL ',
             ),
             '  THL 台灣  の  華語  THL  羅馬拼音 THL  ' => array(
                 'number' => '  THL tai2wan1  の  hua2yu3  THL  luo2ma3 pin1yin1 THL  ',
                 'mark'   => '  THL taíwan  の  huáyǔ  THL  luómǎ pinyin THL  ',
-                'none'   => '  THL taiwan  の  huayu  THL  luoma pinyin THL  ',                
+                'none'   => '  THL taiwan  の  huayu  THL  luoma pinyin THL  ',
             ),
             '   THL  台灣   の   華語   THL   羅馬拼音  THL   ' => array(
                 'number' => '   THL  tai2wan1   の   hua2yu3   THL   luo2ma3 pin1yin1  THL   ',
                 'mark'   => '   THL  taíwan   の   huáyǔ   THL   luómǎ pinyin  THL   ',
-                'none'   => '   THL  taiwan   の   huayu   THL   luoma pinyin  THL   ',                
+                'none'   => '   THL  taiwan   の   huayu   THL   luoma pinyin  THL   ',
             ),
         );
-        
+
         foreach ($tests as $source => $expect) {
             foreach (array_keys($expect) as $tone) {
                 $this->pinyinCheck($expect[$tone], $source, array('split' => 'phrase', 'tone' => $tone));
@@ -343,14 +378,14 @@ class PinyinTest extends PHPUnit_Framework_TestCase
                     'none'   => 'bu chong zih - bong pong mong fong bo po mo fo',
                 ),
             ),
-            
+
             'hy' => array(
                 '補充字 - 崩棚猛奉撥坡摸佛' => array(
                     'number' => 'bu3 chong1 zi4 - beng1 peng2 meng3 feng4 bo1 po1 mo1 fo2',
                     'none'   => 'bu chong zi - beng peng meng feng bo po mo fo',
                 ),
             ),
-            
+
             'ty' => array(
                 '補充字 - 崩棚猛奉撥坡摸佛' => array(
                     'number' => 'bu3 chong1 zih4 - beng1 peng2 meng3 fong4 bo1 po1 mo1 fo2',
@@ -358,7 +393,7 @@ class PinyinTest extends PHPUnit_Framework_TestCase
                 ),
             ),
         );
-        
+
         foreach ($notations as $notation => $tests) {
             foreach ($tests as $source => $expect) {
                 foreach (array_keys($expect) as $tone) {
