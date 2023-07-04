@@ -33,20 +33,20 @@ class Pinyin
         switch ($tonestyle) {
             case 'mark':
                 $output = strtr($source, 
-                    array("\037a"  => "${splitter}a", "\037á"  => "${splitter}á", "\037ǎ"  => "${splitter}ǎ", "\037à"  => "${splitter}à", "\037ạ"  => "${splitter}ạ",
-                          "\037e"  => "${splitter}e", "\037é"  => "${splitter}é", "\037ě"  => "${splitter}ě", "\037è"  => "${splitter}è", "\037ẹ"  => "${splitter}ẹ",
-                          "\037o"  => "${splitter}o", "\037ó"  => "${splitter}ó", "\037ǒ"  => "${splitter}ǒ", "\037ò"  => "${splitter}ò", "\037ọ"  => "${splitter}ọ",
-                          "\037ny" => "${splitter}ny",
+                    array("\037a"  => "{$splitter}a", "\037á"  => "{$splitter}á", "\037ǎ"  => "{$splitter}ǎ", "\037à"  => "{$splitter}à", "\037ạ"  => "{$splitter}ạ",
+                          "\037e"  => "{$splitter}e", "\037é"  => "{$splitter}é", "\037ě"  => "{$splitter}ě", "\037è"  => "{$splitter}è", "\037ẹ"  => "{$splitter}ẹ",
+                          "\037o"  => "{$splitter}o", "\037ó"  => "{$splitter}ó", "\037ǒ"  => "{$splitter}ǒ", "\037ò"  => "{$splitter}ò", "\037ọ"  => "{$splitter}ọ",
+                          "\037ny" => "{$splitter}ny",
                     ));
                 break;
             case 'none':
                 $output = strtr($source,
-                    array("\037a"  => "${splitter}a",
-                          "\037i"  => "${splitter}i",
-                          "\037e"  => "${splitter}e",
-                          "\037ê"  => "${splitter}ê",
-                          "\037o"  => "${splitter}o",
-                          "\037ny" => "${splitter}ny",
+                    array("\037a"  => "{$splitter}a",
+                          "\037i"  => "{$splitter}i",
+                          "\037e"  => "{$splitter}e",
+                          "\037ê"  => "{$splitter}ê",
+                          "\037o"  => "{$splitter}o",
+                          "\037ny" => "{$splitter}ny",
                 ));
 
                 break;
@@ -114,15 +114,15 @@ class Pinyin
                 trigger_error("Currently only thl has tone mark.", E_USER_ERROR);
                 return false;
             }
-            include __DIR__ . "/notations/${notation}.php";
-            // $pinyin = "thl_pinyin_${notation}";
+            include __DIR__ . "/notations/{$notation}.php";
+            // $pinyin = "thl_pinyin_{$notation}";
         } else {
             if ($charset == 'unicode') {
-                include __DIR__ . "/notations/${notation}-toneless.php";
-                // $pinyin = "thl_pinyin_${notation}_toneless";
+                include __DIR__ . "/notations/{$notation}-toneless.php";
+                // $pinyin = "thl_pinyin_{$notation}_toneless";
             } else {
-                include __DIR__ . "/notations/${notation}-simple.php";
-                // $pinyin = "thl_pinyin_${notation}_simple";
+                include __DIR__ . "/notations/{$notation}-simple.php";
+                // $pinyin = "thl_pinyin_{$notation}_simple";
             }
         }
 
