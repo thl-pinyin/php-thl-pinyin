@@ -27,6 +27,11 @@ class BopomofoTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame($expect, $output);
 
+        $source = '測一陣子再試一下';
+        $expect = 'ㄘㄜˋ ㄧ ㄓㄣˋ ㄗ˙ ㄗㄞˋ ㄕˋ ㄧ ㄒㄧㄚˋ';
+
+        $output = Pinyin::bpmf($source);
+        $this->assertSame($expect, $output);
     }
 
     public function testWithSpaces()
